@@ -1,0 +1,46 @@
+{
+  "name": "iankrm",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "node --env-file-if-exists=.env --no-warnings server/index.js",
+    "dev:web": "vite",
+    "dev:web:only": "vite",
+    "build": "vite build",
+    "start": "NODE_ENV=production node --env-file-if-exists=.env --no-warnings server/index.js",
+    "db:preflight": "node --env-file-if-exists=.env --no-warnings server/supabase-preflight.mjs",
+    "db:preflight-rest": "node --env-file-if-exists=.env --no-warnings server/supabase-rest-preflight.mjs",
+    "db:apply": "node --env-file-if-exists=.env --no-warnings server/apply-supabase-migration.mjs",
+    "db:copy-sqlite": "node --env-file-if-exists=.env --no-warnings server/migrate-sqlite-to-postgres.mjs",
+    "db:copy-sqlite-rest": "node --env-file-if-exists=.env --no-warnings server/migrate-sqlite-via-supabase-api.mjs",
+    "lint": "oxlint",
+    "test:api": "node server/test-api.mjs",
+    "test:api:features": "node server/test-features-api.mjs",
+    "test:ui": "node server/test-ui.mjs",
+    "test:ui:features": "node server/test-features-ui.mjs",
+    "test:landing": "node server/test-landing.mjs",
+    "test:api:all": "npm run test:api && npm run test:api:features",
+    "test:ui:all": "npm run test:ui && npm run test:ui:features && npm run test:landing",
+    "test": "npm run test:api:all && npm run test:ui:all",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "oxlint": "^1.81.0",
+    "react-router-dom": "^7.18.4",
+    "vite": "^8.3.0"
+  }
+}
