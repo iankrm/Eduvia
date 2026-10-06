@@ -8,7 +8,7 @@ if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is required for Sup
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.PGSSLMODE === 'disable' ? undefined : { rejectUnauthorized: false },
-  max: Number(process.env.PG_POOL_SIZE) || 10,
+  max: Number(process.env.PG_POOL_SIZE) || (process.env.VERCEL ? 1 : 10),
 });
 
 function postgresSql(sql) {

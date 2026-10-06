@@ -42,10 +42,26 @@ the Postgres connection string.
    it never silently falls back to SQLite.
 
 For deployment, set `DATABASE_URL` and a long random `JWT_SECRET` as server-side
-environment variables. Use a Supabase pooler connection if the hosting runtime
-cannot reach the project's direct database endpoint. The migration enables RLS
-on the application tables; the server connects privately and does not expose
-the database credentials to the frontend.
+environment variables. Vercel runs the Express API as serverless functions, so
+use the Supabase transaction pooler connection string for `DATABASE_URL` (copy
+it from Supabase's Connect panel; do not construct the pooler hostname). Keep
+the direct connection string for local or persistent-server use. The migration
+enables RLS on the application tables; the server connects privately and does
+not expose database credentials to the frontend.
+
+## Deploy to Vercel
+
+1. Push this project to a Git repository and import it into Vercel. Keep `.env`
+   out of the repository; it is ignored by Git.
+2. Use the project root as the Root Directory. The included `vercel.json` sets
+   the Vite build command and `dist` output, routes API calls to Vercel Functions,
+   and falls back to the SPA for client-side routes.
+3. In Vercel Project Settings → Environment Variables, add `DATABASE_URL` using
+   the Supabase **Transaction pooler** URI from the Connect panel, plus
+   `JWT_SECRET`. Add both for Preview and Production, then redeploy. Do not use
+   the service-role key as `DATABASE_URL`.
+4. Open `/api/health` on the deployment URL. It should report
+   `database: "supabase-postgres"` and return the user/class counts.
 
 Production:
 
