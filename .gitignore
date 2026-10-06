@@ -16,7 +16,7 @@ dist-ssr
 !.env.example
 
 # Local SQLite database (schema is recreated by server/db.js on boot)
-data/
+/data/
 *.db
 *.db-shm
 *.db-wal

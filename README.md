@@ -193,7 +193,7 @@ src/
   styles/
     tokens.css base.css utilities.css sections.css    ← landing page (recovered)
     app.css                                        ← app shell and pages
-  data/content.js        landing page copy and content
+  src/data/content.js    landing page copy and content
 ```
 
 ## Data model
