@@ -5,6 +5,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/api/:api_route*",
+      "destination": "/api/index"
+    },
+    {
       "source": "/:path((?!api(?:/|$)).*)",
       "destination": "/index.html"
     }
