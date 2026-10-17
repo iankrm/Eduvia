@@ -15,8 +15,8 @@ display:inline-flex}
 .logo__image {display:block;
 height:42px;
 width:auto;
-object-fit:contain}
-.logo--on-dark .logo__image {filter:brightness(0) invert(1)}
+object-fit:contain;
+filter:drop-shadow(0 2px 10px rgba(255, 95, 135, 0.28))}
 .promo-strip {background:var(--mc-color-neutral-1000);
 border-bottom:1px solid rgba(255,255,255,.09)}
 .promo-strip__text {color:var(--mc-color-text-light);
