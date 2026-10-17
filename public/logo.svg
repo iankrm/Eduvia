@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">EduVia</title>
+  <desc id="logoDesc">EduVia wordmark and icon</desc>
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5b86"/>
+      <stop offset="50%" stop-color="#ef4562"/>
+      <stop offset="100%" stop-color="#d81b4d"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="80" height="80" rx="20" fill="#0d0d0e"/>
+  <path d="M24 22h34v10H34v12h20v10H34v12h24v10H24V22Z" fill="url(#brandGradient)"/>
+  <path d="M47 22 60 74h-12l-6-21-6 21H24l13-52h12l-6 26 6-26h10Z" fill="#ffffff" opacity="0.96"/>
+  <text x="108" y="60" fill="#ffffff" font-size="42" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="-0.06em">EduVia</text>
+</svg>

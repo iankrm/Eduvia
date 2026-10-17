@@ -11,20 +11,12 @@ left:-9999px}
 .skip-link:focus {left:var(--mc-scale-2);
 top:var(--mc-scale-2)}
 .logo {align-items:center;
-gap:.9rem;
-color:#fff;
 display:inline-flex}
-.logo__mark {color:var(--mc-color-brand);
-font-size:2.2rem;
-font-weight:800;
-line-height:1;
-transform:translateY(-.02em)}
-.logo__word {font-family:Helvetica,Arial,sans-serif;
-font-weight:700;
-font-size:2.2rem;
-letter-spacing:-.05em;
-line-height:1}
-.logo--on-dark .logo__word {color:#fff}
+.logo__image {display:block;
+height:42px;
+width:auto;
+object-fit:contain}
+.logo--on-dark .logo__image {filter:brightness(0) invert(1)}
 .promo-strip {background:var(--mc-color-neutral-1000);
 border-bottom:1px solid rgba(255,255,255,.09)}
 .promo-strip__text {color:var(--mc-color-text-light);

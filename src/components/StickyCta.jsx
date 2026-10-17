@@ -47,13 +47,7 @@ export function Footer() {
           <div className="footer__brand">
             <a href="#top" className="footer__logo" aria-label={`${BRAND} home`}>
               <span className="logo logo--on-dark">
-                <svg className="logo__mark" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-                  <path
-                    d="M12 0.5 L14.4 8.1 L22.5 4.6 L18.4 12.4 L24 16.2 L16.2 17.1 L16.9 25.1 L11.6 19.2 L6.2 25.1 L6.9 17.1 L-0.9 16.2 L4.7 12.4 L0.6 4.6 L8.7 8.1 Z"
-                    fill="currentColor"
-                  />
-                </svg>
-                <span className="logo__word">{BRAND}</span>
+                <img src="/logo.svg" alt={`${BRAND} logo`} className="logo__image" />
               </span>
             </a>
             <p className="footer__tagline mc-text-small mc-text--tint">Learn anything. From the best.</p>

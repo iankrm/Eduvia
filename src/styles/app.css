@@ -32,12 +32,18 @@
 }
 
 .app-shell__brand {
-  font-family: "Sohne Schmal", "Sohne", Helvetica, Arial, sans-serif;
-  font-size: 1.6rem;
-  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--mc-color-text-light);
   text-decoration: none;
   margin-right: auto;
+}
+
+.app-shell__brand img {
+  display: block;
+  height: 3.2rem;
+  width: auto;
 }
 
 .app-shell__links {

@@ -79,8 +79,8 @@ export function AppShell({ children }) {
     <div className="app">
       <header className="app-shell">
         <div className="container app-shell__inner">
-          <Link to="/" className="app-shell__brand">
-            {BRAND}
+          <Link to="/" className="app-shell__brand" aria-label={`${BRAND} home`}>
+            <img src="/logo.svg" alt={`${BRAND} logo`} />
           </Link>
 
           <nav className="app-shell__links" aria-label="Account">
