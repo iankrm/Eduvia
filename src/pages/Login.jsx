@@ -35,14 +35,37 @@ export default function Login() {
     <RedirectIfAuthed>
       <div className="auth">
         <aside className="auth__aside">
-          <p className="auth__eyebrow">Welcome back</p>
-          <h2>Continue building your next skill.</h2>
-          <p>Pick up right where you left off with your classes, progress, and certificates.</p>
+          <div>
+            <p className="auth__eyebrow">Welcome back</p>
+            <h2>Continue building your next skill.</h2>
+            <p>Pick up right where you left off with your classes, progress, and certificates.</p>
+          </div>
+
+          <div className="auth__stats" aria-label="Learning highlights">
+            <div className="auth__stat">
+              <strong>12k+</strong>
+              <span>lessons</span>
+            </div>
+            <div className="auth__stat">
+              <strong>4.9/5</strong>
+              <span>average rating</span>
+            </div>
+            <div className="auth__stat">
+              <strong>1:1</strong>
+              <span>mentor feedback</span>
+            </div>
+          </div>
+
+          <ul className="auth__feature-list">
+            <li>Track your learning streak and resume anywhere.</li>
+            <li>Follow curated paths designed for real-world growth.</li>
+            <li>Earn certificates that help you stand out.</li>
+          </ul>
         </aside>
 
         <div className="auth__panel">
           <form className="auth__form" onSubmit={onSubmit} noValidate>
-            <h1>Sign in to EduVia</h1>
+            <h1>Sign in to Elevora</h1>
             <p className="auth__sub">
               New here? <Link to="/signup">Create an account</Link>
             </p>

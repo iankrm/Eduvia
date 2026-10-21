@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eduvia-db
+  namespace: eduvia
+type: Opaque
+stringData:
+  POSTGRES_DB: "eduvia"
+  POSTGRES_USER: "eduvia"
+  POSTGRES_PASSWORD: "change-me-strong-password"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: eduvia-postgres-pvc
+  namespace: eduvia
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eduvia-postgres
+  namespace: eduvia
+spec:
+  serviceName: eduvia-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eduvia-postgres
+  template:
+    metadata:
+      labels:
+        app: eduvia-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: eduvia-db
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eduvia-db
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eduvia-db
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eduvia-postgres
+  namespace: eduvia
+spec:
+  selector:
+    app: eduvia-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP

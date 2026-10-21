@@ -9,7 +9,7 @@ export default function Wishlist() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    document.title = 'Saved classes | EduVia';
+    document.title = 'Saved classes | Elevora';
     let cancelled = false;
     get('/wishlist')
       .then((d) => !cancelled && setClasses(d.classes))

@@ -80,7 +80,7 @@ router.get('/:slug', async (req, res) => {
   if (!c) return res.status(404).json({
     error: 'Class not found'
   });
-  const lessons = await db.prepare('SELECT id, position, title, duration_seconds, video_url, is_preview FROM lessons WHERE class_id = ? ORDER BY position').all(c.id);
+  const lessons = await db.prepare('SELECT id, position, title, duration_seconds, video_url, notes, is_preview FROM lessons WHERE class_id = ? ORDER BY position').all(c.id);
   res.json({
     class: await decorate(c),
     lessons
@@ -156,13 +156,21 @@ router.post('/:id/lessons', requireAuth, requireRole('tutor'), async (req, res) 
   const {
     title,
     duration_seconds,
-    video_url
+    video_url,
+    notes
   } = req.body || {};
   if (!String(title || '').trim()) return res.status(400).json({
     error: 'Give the lesson a title'
   });
   const nextPos = ((await db.prepare('SELECT MAX(position) AS m FROM lessons WHERE class_id = ?').get(c.id)).m ?? -1) + 1;
-  const r = await db.prepare('INSERT INTO lessons (class_id, position, title, duration_seconds, video_url) VALUES (?, ?, ?, ?, ?)').run(c.id, nextPos, String(title).trim(), Math.max(30, Number(duration_seconds) || 600), String(video_url || '').trim());
+  const r = await db.prepare('INSERT INTO lessons (class_id, position, title, duration_seconds, video_url, notes) VALUES (?, ?, ?, ?, ?, ?)').run(
+    c.id,
+    nextPos,
+    String(title).trim(),
+    Math.max(30, Number(duration_seconds) || 600),
+    String(video_url || '').trim(),
+    String(notes || '').trim()
+  );
   res.status(201).json({
     lesson: await db.prepare('SELECT * FROM lessons WHERE id = ?').get(Number(r.lastInsertRowid))
   });

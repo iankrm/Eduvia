@@ -52,6 +52,135 @@
   gap: 1.6rem;
 }
 
+.app-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-left: auto;
+}
+
+.profile-menu {
+  position: relative;
+}
+
+.profile-menu__trigger {
+  border: 1px solid var(--mc-color-neutral-700);
+  background: var(--mc-color-neutral-900);
+  border-radius: 999px;
+  padding: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.8rem);
+  width: min(27rem, 30vw);
+  min-width: 22rem;
+  background: linear-gradient(180deg, rgba(20, 24, 33, 0.98), rgba(11, 14, 17, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.6rem;
+  padding: 0.8rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.42);
+  z-index: 50;
+}
+
+.profile-menu__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem 1.2rem;
+  border-bottom: 1px solid var(--mc-color-neutral-800);
+  margin-bottom: 0.8rem;
+}
+
+.profile-menu__header span {
+  color: var(--mc-color-text-medium);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profile-menu__header strong {
+  color: var(--mc-color-text-light);
+  font-size: 1.5rem;
+}
+
+.profile-menu__item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 1.2rem;
+  border: 0;
+  background: transparent;
+  color: var(--mc-color-text-light);
+  text-decoration: none;
+  font: inherit;
+  border-radius: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.profile-menu__item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(2px);
+}
+
+.profile-menu__item--danger {
+  color: var(--mc-color-red-200);
+  margin-top: 0.4rem;
+}
+
+.app-shell__burger {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--mc-color-neutral-700);
+  background: transparent;
+  cursor: pointer;
+}
+
+.app-shell__burger span {
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: var(--mc-color-text-light);
+  margin-inline: auto;
+}
+
+.app-shell__mobile {
+  border-bottom: 1px solid var(--mc-color-neutral-800);
+  background: var(--mc-color-neutral-1000);
+}
+
+.app-shell__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.2rem 0 2rem;
+}
+
+.app-shell__mobile-link {
+  display: block;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: var(--mc-color-text-light);
+  border-radius: 0.8rem;
+}
+
+.app-shell__mobile-link:hover {
+  background: var(--mc-color-neutral-900);
+}
+
 .app-shell__link {
   color: var(--mc-color-text-medium);
   text-decoration: none;
@@ -165,9 +294,9 @@
   display: none;
   padding: 6.4rem;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 2.4rem;
-  background: linear-gradient(160deg, hsl(348 70% 26%), var(--mc-color-neutral-1010) 70%);
+  background: linear-gradient(160deg, hsl(210 60% 22%), hsl(174 58% 18%) 35%, var(--mc-color-neutral-1010) 100%);
 }
 
 @media (width >= 960px) { .auth__aside { display: flex; } }
@@ -181,6 +310,62 @@
 }
 
 .auth__aside p { color: var(--mc-color-text-medium); margin: 0; max-width: 40ch; }
+
+.auth__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.auth__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.2rem;
+  padding: 1.6rem 1.2rem;
+}
+
+.auth__stat strong {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.04em;
+}
+
+.auth__stat span {
+  color: var(--mc-color-text-medium);
+  font-size: 1.2rem;
+}
+
+.auth__feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.auth__feature-list li {
+  position: relative;
+  padding-left: 2rem;
+  color: var(--mc-color-text-light);
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.auth__feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.8rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7fe7d7, #f5d76d);
+  box-shadow: 0 0 0 4px rgba(127, 231, 215, 0.15);
+}
 
 .auth__eyebrow {
   margin: 0;

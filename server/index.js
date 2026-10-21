@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import app from './app.js';
+import { ensureDemoAccounts } from './db-postgres.js';
 
 const PORT = Number(process.env.PORT) || 3001;
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
@@ -13,6 +14,8 @@ if (existsSync(DIST)) {
   app.use(express.static(DIST));
   app.get(/^(?!\/api(?:\/|$)).*/, (_req, res) => res.sendFile(join(DIST, 'index.html')));
 }
+
+await ensureDemoAccounts();
 
 app.listen(PORT, () => {
   console.log(`  EduVia API   http://localhost:${PORT}/api/health`);

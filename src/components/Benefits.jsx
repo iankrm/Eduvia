@@ -26,7 +26,7 @@ export function Benefits() {
   return (
     <section className="section" id="membership">
       <div className="container">
-        <h2 className="section__title mc-text-h1 mc-text-center">What’s in every EduVia membership?</h2>
+        <h2 className="section__title mc-text-h1 mc-text-center">What’s in every Elevora membership?</h2>
 
         <div className="benefits">
           {BENEFITS.map((b, i) => (

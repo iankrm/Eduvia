@@ -91,21 +91,6 @@ export function Nav() {
             {!loading &&
               (user ? (
                 <>
-                  <Link to="/browse" className="nav__link mc-text-small">
-                    Browse
-                  </Link>
-                  <Link to="/notifications" className="nav__link mc-text-small">
-                    Notifications
-                  </Link>
-                  <Link to="/wishlist" className="nav__link mc-text-small">
-                    Saved
-                  </Link>
-                  <Link to="/billing" className="nav__link mc-text-small">
-                    Billing
-                  </Link>
-                  <Link to="/support" className="nav__link mc-text-small">
-                    Help
-                  </Link>
                   <Button
                     as={Link}
                     to={isTutor ? '/teach' : '/dashboard'}
@@ -165,31 +150,24 @@ export function Nav() {
           {!loading &&
             (user ? (
               <>
-                <Link to="/browse" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
-                  Browse
+                <Link to={isTutor ? '/teach' : '/dashboard'} className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
+                  Dashboard
+                </Link>
+                <Link to="/settings" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
+                  Account
                 </Link>
                 <Link to="/notifications" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
                   Notifications
                 </Link>
                 <Link to="/wishlist" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
-                  Saved
+                  Saved classes
                 </Link>
                 <Link to="/billing" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
                   Billing
                 </Link>
                 <Link to="/support" className="mobile-nav__link mc-text-h3" onClick={() => setOpen(false)}>
-                  Help
+                  Help centre
                 </Link>
-                <Button
-                  as={Link}
-                  to={isTutor ? '/teach' : '/dashboard'}
-                  variant="secondary"
-                  fullWidth
-                  className="nav__link--button mc-my-8"
-                  onClick={() => setOpen(false)}
-                >
-                  Dashboard
-                </Button>
                 <Button variant="tertiary" fullWidth className="nav__link--button" onClick={onSignOut}>
                   Sign out
                 </Button>

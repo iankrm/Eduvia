@@ -354,6 +354,13 @@ export default function Learn() {
             )}
           </div>
 
+          {active?.notes && (
+            <div className="panel panel--flush" style={{ padding: '1.6rem' }}>
+              <p className="setting-row__label" style={{ margin: '0 0 0.8rem' }}>Lesson notes</p>
+              <p style={{ margin: 0, whiteSpace: 'pre-wrap', color: 'var(--mc-color-text-medium)' }}>{active.notes}</p>
+            </div>
+          )}
+
           <div className="row">
             <button className="btn" onClick={markComplete} disabled={done[active?.id]}>
               {done[active?.id] ? 'Completed' : 'Mark complete'}

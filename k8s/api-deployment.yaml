@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eduvia-api
+  namespace: eduvia
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eduvia-api
+  template:
+    metadata:
+      labels:
+        app: eduvia-api
+    spec:
+      containers:
+        - name: api
+          image: eduvia-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: eduvia-config
+                  key: PORT
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: eduvia-config
+                  key: NODE_ENV
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: eduvia-secrets
+                  key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: eduvia-secrets
+                  key: JWT_SECRET
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eduvia-api
+  namespace: eduvia
+spec:
+  selector:
+    app: eduvia-api
+  ports:
+    - port: 3001
+      targetPort: 3001
+      protocol: TCP

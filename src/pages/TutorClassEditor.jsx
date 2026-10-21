@@ -30,7 +30,28 @@ export default function TutorClassEditor() {
   const [form, setForm] = useState(null);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState('');
-  const [newLesson, setNewLesson] = useState({ title: '', duration_seconds: 600, video_url: '' });
+  const [newLesson, setNewLesson] = useState({ title: '', duration_seconds: 600, video_url: '', notes: '' });
+
+  const onVideoUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      setError('Please choose a valid video file.');
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setError('Video files must be smaller than 50MB for this demo.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setNewLesson((n) => ({ ...n, video_url: String(reader.result) }));
+      setError('');
+    };
+    reader.onerror = () => setError('The selected video could not be read.');
+    reader.readAsDataURL(file);
+  };
 
   const load = useCallback(() => {
     get(`/classes/${slug}`)
@@ -79,7 +100,7 @@ export default function TutorClassEditor() {
     setError('');
     try {
       await post(`/classes/${data.id}/lessons`, newLesson);
-      setNewLesson({ title: '', duration_seconds: 600, video_url: '' });
+      setNewLesson({ title: '', duration_seconds: 600, video_url: '', notes: '' });
       load();
     } catch (err) {
       setError(err.message);
@@ -183,6 +204,7 @@ export default function TutorClassEditor() {
                     {runtime(l.duration_seconds)}
                     {l.is_preview ? ' · free preview' : ''}
                     {l.video_url ? ' · video attached' : ' · no video'}
+                    {l.notes ? ' · notes attached' : ' · no notes'}
                   </span>
                 </span>
                 {l.video_url && (
@@ -228,6 +250,30 @@ export default function TutorClassEditor() {
               />
             </div>
           </div>
+
+          <div className="field" style={{ marginBottom: 0 }}>
+            <label htmlFor="l-notes">Lesson notes</label>
+            <textarea
+              id="l-notes"
+              rows={4}
+              value={newLesson.notes}
+              placeholder="Add lesson recap, key takeaways, reading links, or step-by-step notes…"
+              onChange={(e) => setNewLesson((n) => ({ ...n, notes: e.target.value }))}
+            />
+          </div>
+
+          <div className="field" style={{ marginBottom: 0 }}>
+            <label htmlFor="l-file">Or upload a video file</label>
+            <input id="l-file" type="file" accept="video/*" onChange={onVideoUpload} />
+            <span className="field__hint">Supports local MP4/WebM uploads for this demo.</span>
+          </div>
+
+          {newLesson.video_url && (
+            <div className="panel panel--flush" style={{ padding: '1.2rem' }}>
+              <video controls src={newLesson.video_url} style={{ width: '100%', maxWidth: '32rem', borderRadius: '1rem' }} />
+            </div>
+          )}
+
           <button className="btn" type="submit" style={{ alignSelf: 'flex-start' }}>
             Add lesson
           </button>

@@ -1,4 +1,5 @@
 import pg from 'pg';
+import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 
 const { Pool } = pg;
@@ -88,6 +89,75 @@ export async function issueCertificate(userId, classId) {
 
 export const EARNINGS_SHARE = 0.7;
 export const CLASS_PRICE_CENTS = 4900;
+
+const DEMO_ACCOUNTS = [
+  {
+    email: 'student@iankrm.test',
+    password: 'password123',
+    name: 'Ada Okafor',
+    role: 'student',
+    headline: 'Creative technologist',
+    is_admin: 0,
+  },
+  {
+    email: 'kenji@iankrm.test',
+    password: 'password123',
+    name: 'Kenji Nakamura',
+    role: 'tutor',
+    headline: 'Director & story coach',
+    is_admin: 0,
+  },
+  {
+    email: 'admin@iankrm.test',
+    password: 'password123',
+    name: 'Riley Admin',
+    role: 'student',
+    headline: 'Platform administrator',
+    is_admin: 1,
+  },
+];
+
+export async function ensureDemoAccounts() {
+  for (const account of DEMO_ACCOUNTS) {
+    const existing = await db.prepare('SELECT id, password_hash, role, is_admin FROM users WHERE email = ?').get(account.email);
+    const hash = await bcrypt.hash(account.password, 10);
+
+    if (!existing) {
+      const insert = await db.prepare(`
+        INSERT INTO users (email, password_hash, name, role, headline, hue, is_admin)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(account.email, hash, account.name, account.role, account.headline, 348, account.is_admin);
+
+      const userId = Number(insert.lastInsertRowid ?? insert.row?.id);
+      await db.prepare('INSERT INTO settings (user_id) VALUES (?) ON CONFLICT (user_id) DO NOTHING').run(userId);
+      if (account.role === 'tutor') {
+        await db.prepare('INSERT INTO tutor_profiles (user_id, expertise, credentials) VALUES (?, ?, ?) ON CONFLICT (user_id) DO NOTHING').run(userId, 'Directing', 'BA Film');
+      }
+      continue;
+    }
+
+    const passwordMatches = await bcrypt.compare(account.password, existing.password_hash);
+    if (!passwordMatches || existing.role !== account.role || Number(existing.is_admin) !== Number(account.is_admin)) {
+      await db.prepare(`
+        UPDATE users
+        SET password_hash = ?,
+            name = ?,
+            role = ?,
+            headline = ?,
+            is_admin = ?
+        WHERE email = ?
+      `).run(hash, account.name, account.role, account.headline, account.is_admin, account.email);
+    }
+
+    const row = await db.prepare('SELECT id FROM users WHERE email = ?').get(account.email);
+    if (row) {
+      await db.prepare('INSERT INTO settings (user_id) VALUES (?) ON CONFLICT (user_id) DO NOTHING').run(row.id);
+      if (account.role === 'tutor') {
+        await db.prepare('INSERT INTO tutor_profiles (user_id, expertise, credentials) VALUES (?, ?, ?) ON CONFLICT (user_id) DO NOTHING').run(row.id, 'Directing', 'BA Film');
+      }
+    }
+  }
+}
 
 export function recordEarning(tutorId, classId, studentId, amountCents, reason) {
   return db.prepare(

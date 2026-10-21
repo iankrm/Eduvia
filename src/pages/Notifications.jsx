@@ -26,7 +26,7 @@ export default function Notifications() {
   }, []);
 
   useEffect(() => {
-    document.title = 'Notifications | EduVia';
+    document.title = 'Notifications | Elevora';
     load();
   }, [load]);
 

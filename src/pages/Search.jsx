@@ -42,7 +42,7 @@ export default function Search() {
   useEffect(() => {
     if (first.current) {
       first.current = false;
-      if (query) document.title = `${query} — search | EduVia`;
+      if (query) document.title = `${query} — search | Elevora`;
     }
   }, [query]);
 

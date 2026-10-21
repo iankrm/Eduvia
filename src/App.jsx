@@ -58,7 +58,7 @@ export default function App() {
           <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
           <Route path="/class/:slug" element={<RequireAuth><ClassDetail /></RequireAuth>} />
           <Route path="/learn/:slug" element={<RequireAuth><Learn /></RequireAuth>} />
-          <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+          <Route path="/settings/*" element={<RequireAuth><Settings /></RequireAuth>} />
           <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
           <Route path="/billing" element={<RequireAuth><Billing /></RequireAuth>} />
           <Route path="/support" element={<RequireAuth><SupportCenter /></RequireAuth>} />

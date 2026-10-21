@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { get, post } from '../lib/api.js';
-import { BRAND } from '../data/content.js';
+import { BRAND, FOOTER_COLUMNS } from '../data/content.js';
 import { IconBell } from './Icons.jsx';
 
 export function initials(name = '') {
@@ -21,7 +21,6 @@ export function Avatar({ name, hue = 348, size = '' }) {
   );
 }
 
-/* Unread badge that polls the notification feed while signed in. */
 function Bell() {
   const [unread, setUnread] = useState(0);
   const { user } = useAuth();
@@ -44,7 +43,6 @@ function Bell() {
   }, [user]);
 
   const open = async (e) => {
-    // Mark read on arrival so the badge clears as the user sees them.
     if (unread > 0) {
       await post('/notifications/read').catch(() => {});
       setUnread(0);
@@ -65,15 +63,45 @@ function Bell() {
   );
 }
 
-/* Header for every signed-in page. Links differ by role. */
 export function AppShell({ children }) {
   const { user, isTutor, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  useEffect(() => {
+    setProfileOpen(false);
+  }, [location.pathname]);
 
   async function signOut() {
+    setProfileOpen(false);
     await logout();
     navigate('/', { replace: true });
   }
+
+  const primaryLinks = [
+    { to: '/browse', label: 'Browse' },
+    { to: '/search', label: 'Search' },
+    { to: isTutor ? '/teach' : '/dashboard', label: isTutor ? 'Teach' : 'My classes' },
+  ];
+
+  const accountLinks = [
+    { to: '/settings', label: 'Profile' },
+    { to: '/settings/preferences', label: 'Preferences' },
+    { to: '/settings/password', label: 'Change password' },
+    { to: '/billing', label: 'Billing' },
+    { to: '/support', label: 'Help center' },
+    ...(isTutor
+      ? [
+          { to: '/teach/new', label: 'New class' },
+          { to: '/earnings', label: 'Earnings' },
+        ]
+      : [
+          { to: '/wishlist', label: 'Saved' },
+          { to: '/certificates', label: 'Certificates' },
+        ]),
+    ...(user?.is_admin ? [{ to: '/admin', label: 'Admin' }] : []),
+  ];
 
   return (
     <div className="app">
@@ -83,54 +111,46 @@ export function AppShell({ children }) {
             <img src="/logo.svg" alt={`${BRAND} logo`} />
           </Link>
 
-          <nav className="app-shell__links" aria-label="Account">
-            <NavLink to="/browse" className="app-shell__link">
-              Browse
-            </NavLink>
-            <NavLink to="/search" className="app-shell__link">
-              Search
-            </NavLink>
-            <NavLink to={isTutor ? '/teach' : '/dashboard'} className="app-shell__link">
-              {isTutor ? 'Teach' : 'My classes'}
-            </NavLink>
-            {!isTutor && (
-              <>
-                <NavLink to="/wishlist" className="app-shell__link">
-                  Saved
-                </NavLink>
-                <NavLink to="/certificates" className="app-shell__link">
-                  Certificates
-                </NavLink>
-              </>
-            )}
-            {isTutor && (
-              <>
-                <NavLink to="/teach/new" className="app-shell__link">
-                  New class
-                </NavLink>
-                <NavLink to="/earnings" className="app-shell__link">
-                  Earnings
-                </NavLink>
-              </>
-            )}
-            {user?.is_admin && (
-              <NavLink to="/admin" className="app-shell__link">
-                Admin
+          <nav className="app-shell__links" aria-label="Primary navigation">
+            {primaryLinks.map((link) => (
+              <NavLink key={link.to} to={link.to} className="app-shell__link">
+                {link.label}
               </NavLink>
-            )}
-            <NavLink to="/settings" className="app-shell__link">
-              Settings
-            </NavLink>
+            ))}
           </nav>
 
-          <div className="row">
+          <div className="app-shell__actions">
             <Bell />
-            <Link to="/settings" aria-label={`Settings for ${user?.name}`}>
-              <Avatar name={user?.name} hue={user?.hue} />
-            </Link>
-            <button type="button" className="btn btn--quiet btn--sm" onClick={signOut}>
-              Sign out
-            </button>
+
+            <div className="profile-menu">
+              <button
+                type="button"
+                className="profile-menu__trigger"
+                aria-label="Open account menu"
+                aria-expanded={profileOpen}
+                onClick={() => setProfileOpen((v) => !v)}
+              >
+                <Avatar name={user?.name} hue={user?.hue} />
+              </button>
+
+              {profileOpen && (
+                <div className="profile-menu__panel" role="menu" aria-label="Account menu">
+                  <div className="profile-menu__header">
+                    <span>Signed in as</span>
+                    <strong>{user?.name || 'Account'}</strong>
+                  </div>
+                  {accountLinks.map((link) => (
+                    <NavLink key={link.to} to={link.to} className="profile-menu__item" role="menuitem">
+                      {link.label}
+                    </NavLink>
+                  ))}
+                  <button type="button" className="profile-menu__item profile-menu__item--danger" onClick={signOut}>
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       </header>
@@ -140,11 +160,39 @@ export function AppShell({ children }) {
       </main>
 
       <footer className="app-foot">
-        <div className="container row">
-          <Link to="/terms">Terms</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/cookies">Cookies</Link>
-          <span className="muted">© {new Date().getFullYear()} {BRAND}</span>
+        <div className="container">
+          <div className="row" style={{ alignItems: 'flex-start', justifyContent: 'space-between', gap: '2.4rem', flexWrap: 'wrap' }}>
+            <div className="app-foot__brand" style={{ minWidth: '20rem' }}>
+              <Link to="/" aria-label={`${BRAND} home`}>
+                <img src="/logo.svg" alt={`${BRAND} logo`} style={{ width: '12rem', height: 'auto' }} />
+              </Link>
+              <p className="muted" style={{ marginTop: '1rem', maxWidth: '24rem' }}>
+                Learn anything. From the best.
+              </p>
+            </div>
+
+            <nav className="row" aria-label="Footer" style={{ gap: '3.2rem', flexWrap: 'wrap' }}>
+              {FOOTER_COLUMNS.map((col) => (
+                <div key={col.title}>
+                  <p style={{ margin: '0 0 1rem', color: 'var(--mc-color-text-tint)', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '1.1rem' }}>
+                    {col.title}
+                  </p>
+                  <div style={{ display: 'grid', gap: '0.6rem' }}>
+                    {col.links.map((link) => (
+                      <Link key={link.label} to={link.to} style={{ marginRight: 0 }}>
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </nav>
+          </div>
+
+          <div className="row" style={{ justifyContent: 'space-between', marginTop: '2.4rem', gap: '1.2rem', flexWrap: 'wrap' }}>
+            <span className="muted">© {new Date().getFullYear()} {BRAND}. All rights reserved.</span>
+            <span className="muted">Recreated as a design study.</span>
+          </div>
         </div>
       </footer>
     </div>

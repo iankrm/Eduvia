@@ -58,6 +58,7 @@ create table if not exists public.lessons (
   title text not null,
   duration_seconds integer not null default 600,
   video_url text not null default '',
+  notes text not null default '',
   is_preview integer not null default 0,
   unique (class_id, position)
 );

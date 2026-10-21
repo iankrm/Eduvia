@@ -33,7 +33,7 @@ export function Certificates() {
           <div className="split__art" aria-hidden="true">
             <div className="cert">
               <div className="cert__inner">
-                <span className="cert__wordmark">EduVia</span>
+                <span className="cert__wordmark">Elevora</span>
                 <span className="cert__label mc-text-x-small mc-text--uppercase">Certificate of Completion</span>
                 <span className="cert__rule" />
                 <span className="cert__name mc-text-h5">A. Student</span>

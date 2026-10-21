@@ -53,16 +53,39 @@ export default function Signup() {
     <RedirectIfAuthed>
       <div className="auth">
         <aside className="auth__aside">
-          <p className="auth__eyebrow">Start learning</p>
-          <h2>One account. Two ways to grow.</h2>
-          <p>
-            Choose your path and unlock a learner-first platform built for ambitious people who want to sharpen their craft.
-          </p>
+          <div>
+            <p className="auth__eyebrow">Start learning</p>
+            <h2>One account. Two ways to grow.</h2>
+            <p>
+              Choose your path and unlock a learner-first platform built for ambitious people who want to sharpen their craft.
+            </p>
+          </div>
+
+          <div className="auth__stats" aria-label="Platform highlights">
+            <div className="auth__stat">
+              <strong>250+</strong>
+              <span>expert-led classes</span>
+            </div>
+            <div className="auth__stat">
+              <strong>Weekly</strong>
+              <span>new drops</span>
+            </div>
+            <div className="auth__stat">
+              <strong>24/7</strong>
+              <span>self-paced access</span>
+            </div>
+          </div>
+
+          <ul className="auth__feature-list">
+            <li>Build skills with short, focused lessons and practical projects.</li>
+            <li>Learn from creators, strategists, and operators who do the work.</li>
+            <li>Switch between student and creator modes as your goals evolve.</li>
+          </ul>
         </aside>
 
         <div className="auth__panel">
           <form className="auth__form" onSubmit={onSubmit} noValidate>
-            <h1>Create your EduVia account</h1>
+            <h1>Create your Elevora account</h1>
             <p className="auth__sub">Already have one? <Link to="/login">Sign in</Link></p>
 
             <Alert>{error}</Alert>

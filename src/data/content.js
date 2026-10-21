@@ -1,4 +1,4 @@
-export const BRAND = 'EduVia';
+export const BRAND = 'Elevora';
 
 export const NAV_LINKS = [
   { label: 'Gifts', href: '#gifts' },
@@ -9,8 +9,8 @@ export const HERO = {
   title: ['LEARN FROM THE BEST,', 'BE YOUR BEST.'],
   price: '$10/mo',
   priceNote: 'billed annually',
-  cta: 'Get EduVia',
-  secondaryCta: 'Learn More About EduVia',
+  cta: 'Get Elevora',
+  secondaryCta: 'Learn More About Elevora',
   guarantee: '30-day money-back guarantee',
   sub: 'Get unlimited access to thousands of bite-sized lessons.',
 };
@@ -160,7 +160,7 @@ export const CLASSES = [
 export const JOURNEY = {
   title: 'Start your journey today',
   body: 'Get started with a 7-day free trial. Cancel any time.',
-  cta: 'Try EduVia free',
+  cta: 'Try Elevora free',
 };
 
 export const CERTIFICATES = {
@@ -170,10 +170,10 @@ export const CERTIFICATES = {
 };
 
 export const BUSINESS = {
-  eyebrow: 'EduVia for teams',
+  eyebrow: 'Elevora for teams',
   title: 'Level up\nyour team',
   body: 'Give your company access to the world’s best teachers. Flexible learning paths, team analytics, and dedicated onboarding for every role.',
-  cta: 'Explore EduVia for teams',
+  cta: 'Explore Elevora for teams',
   stats: [
     { value: '1,200+', label: 'Companies' },
     { value: '94%', label: 'Completion rate' },
@@ -217,11 +217,11 @@ export const EMAIL = {
 
 export const FAQS = [
   {
-    q: 'What is EduVia?',
-    a: 'EduVia is an online learning platform with hundreds of classes taught by leading experts in writing, business, design, film, music, food, wellness, and science. New classes are added every month.',
+    q: 'What is Elevora?',
+    a: 'Elevora is an online learning platform with hundreds of classes taught by leading experts in writing, business, design, film, music, food, wellness, and science. New classes are added every month.',
   },
   {
-    q: 'How much does EduVia cost?',
+    q: 'How much does Elevora cost?',
     a: 'An annual membership is $10 per month, billed once at $120. Monthly membership is $15 per month. Family plans cover up to six profiles.',
   },
   {
